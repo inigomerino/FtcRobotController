@@ -9,7 +9,7 @@ public class HelloWorldCommented extends OpMode {
     @Override
     public void init() {
         // this sends to the driver station
-        telemetry.addData("Hello","Init-1");
+        telemetry.addData("Hello","Init-2");
     }
     /**
      * This is called repeatedly while OpMode is playing */
