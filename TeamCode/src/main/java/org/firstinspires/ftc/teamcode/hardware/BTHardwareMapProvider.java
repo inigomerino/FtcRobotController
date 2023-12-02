@@ -1,18 +1,20 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.hardware;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.libs.sdk_interface.BTIHardwareProvider;
 import org.firstinspires.ftc.teamcode.libs.sdk_interface.hardware.BTIDcMotor;
-import org.firstinspires.ftc.teamcode.libs.sdk_interface.hardware.BTDcMotorWrapper;
 import org.firstinspires.ftc.teamcode.libs.sdk_interface.hardware.BTIGamepad;
-import org.firstinspires.ftc.teamcode.libs.sdk_interface.hardware.BTGamepadWrapper;
 import org.firstinspires.ftc.teamcode.libs.sdk_interface.hardware.BTIServo;
-import org.firstinspires.ftc.teamcode.libs.sdk_interface.hardware.BTServoWrapper;
 import org.firstinspires.ftc.teamcode.libs.exceptions.BTHardwareNotFoundException;
+
+import org.firstinspires.ftc.teamcode.hardware.BTDcMotorWrapper;
+import org.firstinspires.ftc.teamcode.hardware.BTGamepadWrapper;
+import org.firstinspires.ftc.teamcode.hardware.BTServoWrapper;
+
 
 public class BTHardwareMapProvider implements BTIHardwareProvider {
 
@@ -70,7 +72,7 @@ public class BTHardwareMapProvider implements BTIHardwareProvider {
     public BTIDcMotor getMotor(String name) throws BTHardwareNotFoundException {
         
         // get it
-        DcMotor hw = this.hwMap.get(DcMotor.class, name);
+        DcMotorEx hw = this.hwMap.get(DcMotorEx.class, name);
 
         // check it
         if (hw == null) {

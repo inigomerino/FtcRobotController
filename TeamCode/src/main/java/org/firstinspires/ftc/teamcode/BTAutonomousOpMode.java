@@ -5,21 +5,22 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-//import org.firstinspires.ftc.teamcode.libs.subsystems.BTRobotDTOnly;
-// import org.firstinspires.ftc.teamcode.libs.subsystems.BTIRobot;
-import org.firstinspires.ftc.teamcode.libs.subsystems.BTRobotAutoPilot;
+import org.firstinspires.ftc.teamcode.hardware.BTHardwareMapProvider;
+import org.firstinspires.ftc.teamcode.libs.exceptions.BTHardwareNotFoundException;
+import org.firstinspires.ftc.teamcode.libs.robots.BT2023SeasonRobotV2;
 import org.firstinspires.ftc.teamcode.libs.exceptions.BTRobotInitializationException;
+import org.firstinspires.ftc.teamcode.libs.exceptions.BTRobotNotInitializedException;
 import org.firstinspires.ftc.teamcode.libs.sdk_interface.BTHardwareFactory;
 
 @Autonomous()
 public abstract class BTAutonomousOpMode extends OpMode {
     
     // members
-    private BTRobotAutoPilot robot;    
+    private BT2023SeasonRobotV2 robot;    
     private ElapsedTime runtime;
 
     // you have to define this
-    protected abstract BTRobotAutoPilot makeRobot() throws BTRobotInitializationException;
+    protected abstract BT2023SeasonRobotV2 makeRobot() throws BTRobotInitializationException, BTRobotNotInitializedException, BTHardwareNotFoundException;
 
     // methods
     @Override
@@ -42,14 +43,18 @@ public abstract class BTAutonomousOpMode extends OpMode {
 
             // get the routes
             telemetry.addData("Status", "Routes");
-            String routeInfo = this.robot.getRoute();
+            String routeInfo = this.robot.getRoute().toString();
             telemetry.addData("Status", routeInfo);
 
             // notify
             telemetry.addData("Status", "Initialized");
 
         } catch (BTRobotInitializationException e) {
-            telemetry.addData("Status", "Initialization failed: " + e.getStackTraceAsString());
+            telemetry.addData("Status", "Failed: Robot initialization error: " + e.getStackTraceAsString());
+        } catch (BTRobotNotInitializedException e) {
+            telemetry.addData("Status", "Failed: Robot could not be initializated successfully: " + e.getStackTraceAsString());
+        } catch (Exception e) {
+            telemetry.addData("Status", "Failed: Unidentified error: " + e);
         }
     }
 
@@ -66,7 +71,7 @@ public abstract class BTAutonomousOpMode extends OpMode {
             this.robot.loop();
       
             // // debug
-            String s = robot.getRoute();
+            String s = robot.getRoute().toString();
             if (!s.equals("")) {
                 telemetry.addData("Robot route", s);
             } else {
