@@ -32,7 +32,7 @@ public abstract class BTRemoteControlOpMode extends OpMode {
     try{
 
       // notify
-      telemetry.addData("Status", "Initializing");
+      telemetry.addData("BTStat", "Initializing");
 
       // init hwMap factory -- has to be done b4 init'ing robot
       BTHardwareMapProvider prov = new BTHardwareMapProvider(this.hardwareMap, this.gamepad1, this.gamepad2 );
@@ -43,11 +43,11 @@ public abstract class BTRemoteControlOpMode extends OpMode {
       this.robot = this.makeRobot();
 
       // notify
-      telemetry.addData("Status", " Robot built");
-      telemetry.addData("Status", "Initialized");
+      telemetry.addData("BTStat", " Robot built");
+      telemetry.addData("BTStat", "Initialized");
 
     } catch (BTRobotInitializationException e) {
-        telemetry.addData("Status", "Initialization failed: " + e.getStackTraceAsString());
+        telemetry.addData("BTStat", "Initialization failed: " + e.getStackTraceAsString());
     }
 
   }
@@ -86,7 +86,7 @@ public abstract class BTRemoteControlOpMode extends OpMode {
       telemetry.addData("Gamepad1 A Button", gamepad1.a);
 
       // notify
-      telemetry.addData("Status", "Run Time: " + runtime.toString());
+      telemetry.addData("BTStat", "Run Time: " + runtime.toString());
 
 //    } catch (BTException e) {
 //
@@ -95,7 +95,7 @@ public abstract class BTRemoteControlOpMode extends OpMode {
 //      // for now, just report the error
 //
 //      // notify
-//      telemetry.addData("Status", "Error: " + e.getStackTraceAsString());
+//      telemetry.addData("BTStat", "Error: " + e.getStackTraceAsString());
 
     } catch (Exception e) {
 
@@ -104,7 +104,7 @@ public abstract class BTRemoteControlOpMode extends OpMode {
       // for now, just report the error
 
       // notify
-      telemetry.addData("Status", "Unidentifier error: " + e);
+      telemetry.addData("BTStat", "Unidentifier error: " + e);
 
     }
 

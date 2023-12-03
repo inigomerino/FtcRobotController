@@ -128,7 +128,7 @@ public class BTGamepadWrapper implements BTIGamepad {
     // controller interface items
     @Override
     public BTVector getDriveVector() {
-        return new BTVector(this.getLeftStickX(), this.getLeftStickY());
+        return new BTVector(this.getLeftStickX(), -this.getLeftStickY());
     }
 
     @Override

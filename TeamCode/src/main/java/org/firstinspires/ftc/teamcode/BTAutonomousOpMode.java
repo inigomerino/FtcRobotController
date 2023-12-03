@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.hardware.BTHardwareMapProvider;
 import org.firstinspires.ftc.teamcode.libs.exceptions.BTHardwareNotFoundException;
 import org.firstinspires.ftc.teamcode.libs.robots.BT2023SeasonRobotV2;
@@ -27,8 +28,14 @@ public abstract class BTAutonomousOpMode extends OpMode {
     public void init() {
         try {
 
+            // init telemetry
+            // We show the log in oldest-to-newest order, as that's better for poetry
+            telemetry.log().setDisplayOrder(Telemetry.Log.DisplayOrder.OLDEST_FIRST);
+            // We can control the number of lines shown in the log
+            telemetry.log().setCapacity(6);
+
             // notify
-            telemetry.addData("Status", "Initializing");
+            telemetry.addData("BTStat", "Initializing");
 
             // init hwMap factory -- has to be done b4 init'ing robot
             BTHardwareMapProvider prov = new BTHardwareMapProvider(this.hardwareMap, this.gamepad1, this.gamepad2 );
@@ -39,22 +46,22 @@ public abstract class BTAutonomousOpMode extends OpMode {
             this.robot = this.makeRobot();
 
             // notify
-            telemetry.addData("Status", "Robot built");
+            telemetry.addData("BTStat", "Robot built");
 
             // get the routes
-            telemetry.addData("Status", "Routes");
+            telemetry.addData("BTStat", "Routes:");
             String routeInfo = this.robot.getRoute().toString();
-            telemetry.addData("Status", routeInfo);
+            telemetry.addData("BTStat", routeInfo);
 
             // notify
-            telemetry.addData("Status", "Initialized");
+            telemetry.addData("BTStat", "Initialized");
 
         } catch (BTRobotInitializationException e) {
-            telemetry.addData("Status", "Failed: Robot initialization error: " + e.getStackTraceAsString());
+            telemetry.addData("BTStat", "Failed: Robot initialization error: " + e.getStackTraceAsString());
         } catch (BTRobotNotInitializedException e) {
-            telemetry.addData("Status", "Failed: Robot could not be initializated successfully: " + e.getStackTraceAsString());
+            telemetry.addData("BTStat", "Failed: Robot could not be initialized successfully: " + e.getStackTraceAsString());
         } catch (Exception e) {
-            telemetry.addData("Status", "Failed: Unidentified error: " + e);
+            telemetry.addData("BTStat", "Failed: Unidentified error: " + e);
         }
     }
 
@@ -62,7 +69,36 @@ public abstract class BTAutonomousOpMode extends OpMode {
     public void start() {
         runtime.reset();
     }
-    
+
+    @Override
+    public void stop() {
+
+        // stop the robot
+        robot.stop();
+
+        // log
+        this.logNavStatus();
+        
+        // notify
+        telemetry.addData("BTStat", "Run Time: " + runtime.toString());
+        telemetry.update();
+    }
+
+    private void logNavStatus() {
+
+        // add it
+        telemetry.log().add("Nav Logs:");
+
+        // get debug info
+        StringBuilder logString = new StringBuilder();
+        for (String entry : robot.getNavigation().getLog()) {
+            telemetry.log().add(entry);
+            //logString.append(entry);
+            logString.append("\n");          
+        }
+
+    }
+
     @Override
     public void loop() {
         try {
@@ -70,17 +106,11 @@ public abstract class BTAutonomousOpMode extends OpMode {
             // do some stuff
             this.robot.loop();
       
-            // // debug
-            String s = robot.getRoute().toString();
-            if (!s.equals("")) {
-                telemetry.addData("Robot route", s);
-            } else {
-                telemetry.addData("Robot route", "Complete");
-            }
-            
-      
+            // log
+            this.logNavStatus();
+
             // notify
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.addData("BTStat", "Run Time: " + runtime.toString());
       
         } catch (Exception e) {
         
@@ -89,7 +119,7 @@ public abstract class BTAutonomousOpMode extends OpMode {
             // for now, just report the error
         
             // notify
-            telemetry.addData("Status", "Unidentifier error: " + e);
+            telemetry.addData("BTStat", "Unidentified error: " + e);
     
         }
 

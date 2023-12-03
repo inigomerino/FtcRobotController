@@ -26,6 +26,6 @@ android {
 dependencies {
     implementation project(':FtcRobotController')
     annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
-    implementation files('lib/FTCBotTanksLibs-1.26.0.jar')  // this is the FTC BotTanks libs
+    implementation files('lib/FTCBotTanksLibs-1.35.0.jar')  // this is the FTC BotTanks libs
 }
 

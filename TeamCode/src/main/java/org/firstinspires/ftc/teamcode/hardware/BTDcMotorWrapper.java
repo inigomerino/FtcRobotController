@@ -102,7 +102,7 @@ public class BTDcMotorWrapper implements BTIDcMotor {
         MotorConfigurationType motorConfig = this.realMotor.getMotorType();
     
         // Example criteria - adjust these based on the actual characteristics of your motors
-        if (motorConfig.getMaxRPM() == 312.0 && motorConfig.getTicksPerRev() == 537.7) {
+        if (motorConfig.getMaxRPM() == 60.0 && motorConfig.getTicksPerRev() == 2786.0) {
             return BTIDcMotor.MotorType.GOBILDA_5202_SERIES;
         } else if (motorConfig.getMaxRPM() == 0.0 && motorConfig.getTicksPerRev() == 2000.0) {
             return BTIDcMotor.MotorType.GOBILDA_ODOMETER_POD;
