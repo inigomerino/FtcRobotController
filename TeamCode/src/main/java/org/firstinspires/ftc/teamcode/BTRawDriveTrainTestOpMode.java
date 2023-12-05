@@ -11,8 +11,8 @@ import org.firstinspires.ftc.teamcode.libs.exceptions.BTException;
 import java.util.List;
 
 
-@TeleOp(name="Raw Hardware Test", group="Tests")
-public class BTRawHardwareTestOpMode extends LinearOpMode {
+@TeleOp(name="Raw Drivetrain Test", group="Tests")
+public class BTRawDriveTrainTestOpMode extends LinearOpMode {
 
     private StringBuilder telemetryLog;
     private String currentReading;
@@ -57,12 +57,26 @@ public class BTRawHardwareTestOpMode extends LinearOpMode {
 
             // get it
             DcMotor m = hardwareMap.get(DcMotor.class, name);
+            // reset
+            m.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            // set mode
+            m.setMode(DcMotor.RunMode.RUN_USING_ENCODER); // apparently this refers to the motor's built in encoder; not for extenral encoders. See https://gm0.org/en/latest/docs/software/tutorials/encoders.html
 
             // run
             m.setPower(0.5);
 
-            // Run motor for a few seconds
-            sleep(seconds * 1000);
+            // Record start time
+            long startTime = System.currentTimeMillis();
+            long maxTime = seconds * 1000;
+
+            // Loop until the current time - start time is less than maxTime
+            int ticks = 0;
+            while (opModeIsActive() && ( System.currentTimeMillis() - startTime < maxTime )) {
+
+                // get number of revolutions
+                ticks = m.getCurrentPosition();   // NOTE: TODO: WATCH FOR INT OVERFLOWs. This has info BUT appears to be outdated: https://docs.ftclib.org/ftclib/features/hardware/motors
+                this.updateReading("Odometer '" + name + "' ticks: " + ticks);
+            }
 
             // Stop the motor
             m.setPower(0);
@@ -77,43 +91,6 @@ public class BTRawHardwareTestOpMode extends LinearOpMode {
         }
     }
 
-    private void runOdometer(String name, long seconds) {
-
-        try {
-
-            // notify
-            this.printUpdate("Reading from Odometer '" + name + " for " + seconds + "sec.");
-
-            // get it
-            DcMotor m = hardwareMap.get(DcMotor.class, name);
-            // reset
-            m.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            // set mode
-            m.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER); // apparently this refers to the motor's built in encoder; not for extenral encoders. See https://gm0.org/en/latest/docs/software/tutorials/encoders.html
-
-            // Record start time
-            long startTime = System.currentTimeMillis();
-            long maxTime = seconds * 1000;
-
-            // Loop until the current time - start time is less than maxTime
-            int ticks = 0;
-            while (opModeIsActive() && ( System.currentTimeMillis() - startTime < maxTime )) {
-
-                // get number of revolutions
-                ticks = m.getCurrentPosition();   // NOTE: TODO: WATCH FOR INT OVERFLOWs. This has info BUT appears to be outdated: https://docs.ftclib.org/ftclib/features/hardware/motors
-                this.updateReading("Odometer '" + name + "' ticks: " + ticks);
-            }
-            
-            // done
-            this.printUpdate("Test complete for odometer '" + name + ".");
-        
-//        } catch (BTException e) {
-//            this.printUpdate("BT error while testing motor '" + name + "': " + e.getStackTrace());
-        } catch (Exception e) {
-            this.printUpdate("Unknown error while testing odometer '" + name + "': " + e);
-        }
-    }
-
     private void testMotors() {
 
         // notify
@@ -121,30 +98,15 @@ public class BTRawHardwareTestOpMode extends LinearOpMode {
 
         // Initialize and run motors one by one
         for (String name : new String[]{"dtFL", "dtFR", "dtBL", "dtBR"}) {
-            this.runMotor(name, 0.5, this.testDurationSeconds);
+            this.runMotor(name, 0.5, testDurationSeconds);
             this.commitReading();
         }
 
         // done
-        this.printUpdate("Motor test complete");
+        this.printUpdate("Motor test complete - take pics now. Sleeping for 5 mins - hit Stop to end earlier");
+
+        sleep(5 * 60 * 1000);
     }
-
-    private void testOdometers() {
-
-        // notify
-        this.printUpdate("Testing odometers. Each odometer will be reading for " + this.testDurationSeconds + " seconds. Confirm behavior and values printed are as expected.");
-
-        // Initialize and run motors one by one
-        for (String name : new String[]{"dtFL", "dtBL"}) {
-            //, "dtFR", , "dtBR"}) {
-            this.runOdometer(name, testDurationSeconds);
-            this.commitReading();
-        }
-
-        // done
-        this.printUpdate("Odometer test complete");
-    }
-
 
     @Override
     public void runOpMode() {
@@ -157,17 +119,18 @@ public class BTRawHardwareTestOpMode extends LinearOpMode {
 
             // done
             this.printUpdate("Initialization complete");
-            this.printUpdate("*** NOTE: Place robot in a safe position ***");
+            this.printUpdate("*** NOTES: 1) Connect all motor encoders to the right port");
+            this.printUpdate("***        2) Place robot in a safe position");
 
             // Wait for the game to start (driver presses PLAY)
             waitForStart();
 
             // run tests
-            this.testOdometers();
             this.testMotors();
 
         } catch (Exception e) {
             this.printUpdate("Unknown error in main loop: " + e);
+            
         } finally {
             this.printUpdate("Suggested troubleshooting actions: " +
                     "Check robot configuration in the driver station. " +
