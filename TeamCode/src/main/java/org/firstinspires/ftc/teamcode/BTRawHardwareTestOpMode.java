@@ -125,6 +125,12 @@ public class BTRawHardwareTestOpMode extends LinearOpMode {
             this.commitReading();
         }
 
+        // Initialize and run motors one by one
+        for (String name : new String[]{"armL", "armR"}) {
+            this.runMotor(name, 0.5, 3);
+            this.commitReading();
+        }
+
         // done
         this.printUpdate("Motor test complete");
     }
@@ -174,7 +180,7 @@ public class BTRawHardwareTestOpMode extends LinearOpMode {
                     "Drivetrain motor placement on control hub:  'dtFL' -> 0, 'dtFR' -> 1, 'dtBL' -> 2, 'dtBR -> 3" +
                     "Check that the failed elements are correctly connecter to the appropriate ports in the control station. " +
                     "Check that the opMode initialized the hardware map properly. " +
-                    "Check that motors, wheels and other mechanisms are rotating freelt and not rubbing. ");
+                    "Check that motors, wheels and other mechanisms are rotating freely and not rubbing. ");
         }
     }
 

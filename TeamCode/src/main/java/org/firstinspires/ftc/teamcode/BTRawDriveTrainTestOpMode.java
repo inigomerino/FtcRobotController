@@ -137,7 +137,7 @@ public class BTRawDriveTrainTestOpMode extends LinearOpMode {
                     "Drivetrain motor placement on control hub:  'dtFL' -> 0, 'dtFR' -> 1, 'dtBL' -> 2, 'dtBR -> 3" +
                     "Check that the failed elements are correctly connecter to the appropriate ports in the control station. " +
                     "Check that the opMode initialized the hardware map properly. " +
-                    "Check that motors, wheels and other mechanisms are rotating freelt and not rubbing. ");
+                    "Check that motors, wheels and other mechanisms are rotating freely and not rubbing. ");
         }
     }
 

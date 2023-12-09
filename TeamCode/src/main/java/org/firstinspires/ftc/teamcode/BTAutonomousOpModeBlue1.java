@@ -23,7 +23,7 @@ public class BTAutonomousOpModeBlue1 extends BTAutonomousOpMode {
 
         // notable spots worth visiting
         BTLocation blue1Home            = new BTLocation(58, 8);
-        BTLocation blue1PixelCenterPos  = new BTLocation(58, 39);
+        BTLocation blue1PixelCenterPos  = new BTLocation(58, 41);
         BTLocation blue1CornerPos       = new BTLocation(8, 8);
 
         // construct the route we want to follow
