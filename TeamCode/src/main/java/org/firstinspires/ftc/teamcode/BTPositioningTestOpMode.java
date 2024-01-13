@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.libs.exceptions.BTException;
 import org.firstinspires.ftc.teamcode.libs.math.BTLocation;
@@ -18,14 +19,16 @@ public class BTPositioningTestOpMode extends LinearOpMode {
 
     private StringBuilder telemetryLog;
     private String currentReading;
-    private long testDurationSeconds = 15;
     private BT2023SeasonRobotV2 robot;
+    private ElapsedTime opmodeRunTime;
 
     ////////////////////////////// telemetry logic //////////////////////////////
+    
     private void resfreshDisplay() {
         // notify
         telemetry.addData("BTStat", telemetryLog.toString());
-        telemetry.addData("Reading", currentReading);
+        telemetry.addData("Run Time", "%.1f seconds", opmodeRunTime.seconds());
+        telemetry.addData("Reading", this.currentReading);
         telemetry.update();
     }
 
@@ -41,7 +44,7 @@ public class BTPositioningTestOpMode extends LinearOpMode {
     private void updateReading(String reading) {
 
         // do it
-        currentReading = reading;
+        this.currentReading = reading;
 
         // refresh
         this.resfreshDisplay();
@@ -51,24 +54,17 @@ public class BTPositioningTestOpMode extends LinearOpMode {
         this.printUpdate(this.currentReading);
         this.updateReading("(none)");
     }
+
     ////////////////////////////// end of telemetry logic //////////////////////////////
 
     private void measure() {
-
-        // notify
-        this.printUpdate("Testing odometers. Each odometer will be reading for " + this.testDurationSeconds + " seconds. Confirm behavior and values printed are as expected.");
 
         while (opModeIsActive()) {
 
             this.robot.loop();
             BTLocation curPos = this.robot.getCurrentLocation();
-            this.updateReading("Position: '" + curPos.toString() );
-            // this.commitReading();
-
+            this.updateReading("Robot position: '" + curPos.toString() );
         }
-
-        // done
-        this.printUpdate("Odometer test complete");
     }
 
 
@@ -78,9 +74,9 @@ public class BTPositioningTestOpMode extends LinearOpMode {
         try {
 
             // init the log
-            telemetryLog = new StringBuilder();
-            currentReading = new String();
-            robot = new BT2023SeasonRobotV2();  // this will be at the origin
+            this.telemetryLog = new StringBuilder();
+            this.currentReading = new String();
+            this.robot = new BT2023SeasonRobotV2();  // this will be at the origin
 
             // done
             this.printUpdate("********************************************************");
