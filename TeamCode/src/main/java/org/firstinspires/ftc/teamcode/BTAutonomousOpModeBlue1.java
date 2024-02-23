@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.libs.exceptions.BTRobotInitializationExcep
 import org.firstinspires.ftc.teamcode.libs.exceptions.BTRobotNotInitializedException;    
 import org.firstinspires.ftc.teamcode.libs.math.BTLocation;
 import org.firstinspires.ftc.teamcode.libs.subsystems.planning.BTRoute;
+import org.firstinspires.ftc.teamcode.libs.subsystems.navigation.BTNavigation;
 
 
 @Autonomous()
@@ -22,9 +23,9 @@ public class BTAutonomousOpModeBlue1 extends BTAutonomousOpMode {
     protected BT2023SeasonRobotV2 makeRobot() throws BTRobotInitializationException, BTRobotNotInitializedException, BTHardwareNotFoundException {
 
         // notable spots worth visiting
-        BTLocation blue1Home            = new BTLocation(58, 8);
-        BTLocation blue1PixelCenterPos  = new BTLocation(58, 41);
-        BTLocation blue1CornerPos       = new BTLocation(8, 8);
+        BTLocation blue1Home            = new BTLocation(58,  8, 90);
+        BTLocation blue1PixelCenterPos  = new BTLocation(58, 39, 90);
+        BTLocation blue1CornerPos       = new BTLocation( 8,  8, 90);
 
         // construct the route we want to follow
         BTRoute r = new BTRoute();
@@ -32,7 +33,11 @@ public class BTAutonomousOpModeBlue1 extends BTAutonomousOpMode {
         r.addStop(blue1Home);               // back away from pixel (back home)
         r.addStop(blue1CornerPos);          // go left all the way to wall
         
-        return new BT2023SeasonRobotV2(blue1Home, r);
+        BT2023SeasonRobotV2 robot = new BT2023SeasonRobotV2(blue1Home, r);
+        BTNavigation nav = (BTNavigation)robot.getNavigation();
+        nav.setDriveSpeed(0.5);
+        nav.setRotationSpeed(0.5);
+        return robot;
     }
 
 }

@@ -26,6 +26,14 @@ android {
 dependencies {
     implementation project(':FtcRobotController')
     annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
-    implementation files('lib/FTCBotTanksLibs-1.49.0.jar')  // this is the FTC BotTanks libs
+
+    // // this is what we ran in the Dec 23 tournament
+    // implementation files('lib/FTCBotTanksLibs-1.49.0.jar')  // this is the FTC BotTanks libs
+
+    // // this is based on v.49 but it has the one lift switched direction / velocity
+    // implementation files('lib/FTCBotTanksLibs-1.61.0.jar')  // this is the FTC BotTanks libs
+
+    // this is the latest with rotation
+    implementation files('lib/FTCBotTanksLibs-1.1215.0.jar')  // this is the FTC BotTanks libs
 }
 

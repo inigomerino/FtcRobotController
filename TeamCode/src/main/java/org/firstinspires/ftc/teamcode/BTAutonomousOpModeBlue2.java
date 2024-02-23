@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.libs.exceptions.BTRobotInitializationExcep
 import org.firstinspires.ftc.teamcode.libs.exceptions.BTRobotNotInitializedException;    
 import org.firstinspires.ftc.teamcode.libs.math.BTLocation;
 import org.firstinspires.ftc.teamcode.libs.subsystems.planning.BTRoute;
+import org.firstinspires.ftc.teamcode.libs.subsystems.navigation.BTNavigation;
 
 
 @Autonomous()
@@ -22,12 +23,12 @@ public class BTAutonomousOpModeBlue2 extends BTAutonomousOpMode {
     protected BT2023SeasonRobotV2 makeRobot() throws BTRobotInitializationException, BTRobotNotInitializedException, BTHardwareNotFoundException {
 
         // notable spots worth visiting
-        BTLocation blue2Home            = new BTLocation(106, 8);
-        BTLocation blue2PixelCenterPos  = new BTLocation(106, 41);
-        BTLocation blue2PixelBackPos    = new BTLocation(106, 35);
-        BTLocation blue2EscapePos       = new BTLocation(126, 35);
-        BTLocation blue2Foward          = new BTLocation(126, 76);
-        BTLocation blue2CornerPos       = new BTLocation(8, 62);
+        BTLocation blue2Home            = new BTLocation(106,  8, 90);
+        BTLocation blue2PixelCenterPos  = new BTLocation(106, 39, 90);
+        BTLocation blue2PixelBackPos    = new BTLocation(106, 35, 90);
+        BTLocation blue2EscapePos       = new BTLocation(126, 35, 90);
+        BTLocation blue2Foward          = new BTLocation(126, 76, 90);
+        BTLocation blue2CornerPos       = new BTLocation(  8, 62, 90);
 
         // construct the route we want to follow
         BTRoute r = new BTRoute();
@@ -37,7 +38,11 @@ public class BTAutonomousOpModeBlue2 extends BTAutonomousOpMode {
         r.addStop(blue2Foward);             // move to x coord center of map
         r.addStop(blue2CornerPos);          // drive to end position
         
-        return new BT2023SeasonRobotV2(blue2Home, r);
+        BT2023SeasonRobotV2 robot = new BT2023SeasonRobotV2(blue2Home, r);
+        BTNavigation nav = (BTNavigation)robot.getNavigation();
+        nav.setDriveSpeed(0.5);
+        nav.setRotationSpeed(0.5);
+        return robot;
     }
 
 }

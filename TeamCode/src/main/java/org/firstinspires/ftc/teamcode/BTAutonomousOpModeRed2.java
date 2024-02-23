@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.libs.exceptions.BTRobotInitializationExcep
 import org.firstinspires.ftc.teamcode.libs.exceptions.BTRobotNotInitializedException;    
 import org.firstinspires.ftc.teamcode.libs.math.BTLocation;
 import org.firstinspires.ftc.teamcode.libs.subsystems.planning.BTRoute;
+import org.firstinspires.ftc.teamcode.libs.subsystems.navigation.BTNavigation;
 
 
 @Autonomous()
@@ -22,12 +23,12 @@ public class BTAutonomousOpModeRed2 extends BTAutonomousOpMode {
     protected BT2023SeasonRobotV2 makeRobot() throws BTRobotInitializationException, BTRobotNotInitializedException, BTHardwareNotFoundException {
 
         // notable spots worth visiting
-        BTLocation red2Home            = new BTLocation(33.25, 8);
-        BTLocation red2PixelCenterPos  = new BTLocation(33.25, 41);
-        BTLocation red2PixelBackPos    = new BTLocation(33.25, 33);
-        BTLocation red2EscapePos       = new BTLocation(17.75, 33);
-        BTLocation red2Foward          = new BTLocation(17.75, 62.5);
-        BTLocation red2CornerPos       = new BTLocation(127.5, 55.5);
+        BTLocation red2Home            = new BTLocation(33.25,  8.0, 90);
+        BTLocation red2PixelCenterPos  = new BTLocation(33.25, 39.0, 90);
+        BTLocation red2PixelBackPos    = new BTLocation(33.25, 33.0, 90);
+        BTLocation red2EscapePos       = new BTLocation(17.75, 33.0, 90);
+        BTLocation red2Foward          = new BTLocation(17.75, 62.5, 90);
+        BTLocation red2CornerPos       = new BTLocation(127.5, 55.5, 90);
 
         // construct the route we want to follow
         BTRoute r = new BTRoute();
@@ -37,7 +38,11 @@ public class BTAutonomousOpModeRed2 extends BTAutonomousOpMode {
         r.addStop(red2Foward);             // move to x coord center of map
         r.addStop(red2CornerPos);          // drive to end position
         
-        return new BT2023SeasonRobotV2(red2Home, r);
+        BT2023SeasonRobotV2 robot = new BT2023SeasonRobotV2(red2Home, r);
+        BTNavigation nav = (BTNavigation)robot.getNavigation();
+        nav.setDriveSpeed(0.5);
+        nav.setRotationSpeed(0.5);
+        return robot;
     }
 
 }

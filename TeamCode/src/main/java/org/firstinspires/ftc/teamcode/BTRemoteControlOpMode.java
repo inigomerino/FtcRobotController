@@ -84,6 +84,7 @@ public abstract class BTRemoteControlOpMode extends OpMode {
       // debug
       telemetry.addData("Gamepad1 Left Stick X", gamepad1.left_stick_x);
       telemetry.addData("Gamepad1 A Button", gamepad1.a);
+      telemetry.addData("Gamepad1 B Button", gamepad1.b);
 
       // notify
       telemetry.addData("BTStat", "Run Time: " + runtime.toString());
